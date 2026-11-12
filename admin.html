@@ -1,83 +1,22 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editar Mi Tienda - ZEDRIP</title>
-<style>
-body{font-family:Arial;background:#f2f2f2;padding:15px}
-h1{text-align:center}
-.caja{background:white;padding:15px;border-radius:10px;max-width:500px;margin:auto}
-input,select{width:100%;padding:12px;margin:8px 0;box-sizing:border-box}
-button{width:100%;padding:13px;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
-.guardar{background:#00c853;color:white}
-.ver{background:#111;color:white;margin-top:10px}
-.prod{background:white;padding:12px;border-radius:10px;margin:10px auto;max-width:500px}
-.prod img{width:100%;height:220px;object-fit:cover;border-radius:8px}
-.borrar{background:red;color:white;margin-top:8px}
-</style>
-</head>
-<body>
-<h1>Editar Mi Tienda - ZEDRIP</h1>
-
-<div class="caja">
-  <label>Nombre</label>
-  <input id="f-nombre" placeholder="Ej: Polo Negro ZEDRIP">
-  <label>Precio S/</label>
-  <input id="f-precio" type="number" placeholder="59">
-  <label>Categoría</label>
-  <select id="f-cat">
-    <option value="polos">Polos</option>
-    <option value="sudaderas con capucha">Sudaderas</option>
-    <option value="pantalones">Pantalones</option>
-    <option value="otros">Otros</option>
-  </select>
-  <label>Foto (link)</label>
-  <input id="f-foto" placeholder="https://...">
-  <button class="guardar" onclick="guardarNuevo()">GUARDAR PRODUCTO</button>
-  <button class="ver" onclick="location.href='index.html'">VER TIENDA</button>
-</div>
-
-<h2 style="text-align:center">Mis productos</h2>
-<div id="lista"></div>
-
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Editar Mi Tienda - ZEDRIP</title><style>body{font-family:Arial;background:#eee;padding:20px}input,select{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc;box-sizing:border-box}.guardar{background:#00c853;color:#fff;border:none;padding:15px;width:100%;border-radius:10px;font-weight:bold}.ver{background:#000;color:#fff;display:block;text-align:center;padding:15px;border-radius:10px;text-decoration:none;margin-top:10px}.card{background:#fff;padding:10px;margin-top:15px;border-radius:10px}.card img{width:100%;height:180px;object-fit:cover;border-radius:8px}</style></head>
+<body><h2>Editar Mi Tienda - ZEDRIP</h2>
+Nombre <input id="nombre" placeholder="Ej: Polo Negro ZEDRIP">
+Precio S/ <input id="precio" type="number" value="59">
+Categoría <select id="categoria"><option>Polos</option><option>Hoodies</option><option>Pantalones</option></select>
+Foto (link) <input id="foto" placeholder="https://...">
+<button class="guardar" onclick="guardar()">GUARDAR PRODUCTO</button>
+<a class="ver" href="index.html">VER TIENDA</a>
+<h2>Mis productos</h2><div id="lista"></div>
 <script>
-let productos = JSON.parse(localStorage.getItem('zedrip_productos')) || [
-  {n:"Oversize Blanco",c:"polos",p:59,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500"},
-  {n:"Graphic Beige",c:"polos",p:69,img:"https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=500"},
-  {n:"Sudadera con capucha Negro ZEDRIP",c:"sudaderas con capucha",p:119,img:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500"},
-  {n:"Pantalon Cargo Negro",c:"pantalones",p:119,img:"https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=500"}
+let base=[
+{nombre:"Polo Oversize Blanco",precio:59,categoria:"Polos",foto:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500"},
+{nombre:"Hoodie Negro ZEDRIP",precio:129,categoria:"Hoodies",foto:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500"},
+{nombre:"Pantalón Cargo Beige",precio:99,categoria:"Pantalones",foto:"https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500"}
 ];
-
-function pintar(){
-  document.getElementById('lista').innerHTML = productos.map((pr,i)=>`
-    <div class="prod">
-      <img src="${pr.img}">
-      <b>${pr.n}</b><br>S/ ${pr.p} - ${pr.c}<br>
-      <button class="borrar" onclick="borrar(${i})">ELIMINAR</button>
-    </div>`).join('');
-}
-
-function guardarNuevo(){
-  let n = document.getElementById('f-nombre').value;
-  let p = document.getElementById('f-precio').value;
-  let c = document.getElementById('f-cat').value;
-  let img = document.getElementById('f-foto').value;
-  if(!n || !p){ alert('Falta nombre o precio'); return; }
-  if(!img) img = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500';
-  productos.push({n:n, c:c, p:Number(p), img:img});
-  localStorage.setItem('zedrip_productos', JSON.stringify(productos));
-  alert('Guardado! Ahora ve a VER TIENDA');
-  pintar();
-}
-
-function borrar(i){
-  productos.splice(i,1);
-  localStorage.setItem('zedrip_productos', JSON.stringify(productos));
-  pintar();
-}
-
-pintar();
-</script>
-</body>
-</html>
+function get(){return JSON.parse(localStorage.getItem("productos_zedrip")||"null")||base}
+function mostrar(){let ps=get();document.getElementById("lista").innerHTML=ps.map((p,i)=>`<div class="card"><img src="${p.foto}"><b>${p.nombre}</b><p>S/ ${p.precio} - ${p.categoria}</p><button onclick="eliminar(${i})" style="background:red;color:#fff;border:none;padding:10px;width:100%;border-radius:8px">ELIMINAR</button></div>`).join("")}
+function guardar(){let ps=get();ps.push({nombre:document.getElementById("nombre").value,precio:document.getElementById("precio").value,categoria:document.getElementById("categoria").value,foto:document.getElementById("foto").value});localStorage.setItem("productos_zedrip",JSON.stringify(ps));alert("Guardado! Ahora ve a VER TIENDA");mostrar()}
+function eliminar(i){let ps=get();ps.splice(i,1);localStorage.setItem("productos_zedrip",JSON.stringify(ps));mostrar()}
+mostrar();
+</script></body></html>
