@@ -1,22 +1,22 @@
-<!DOCTYPE html>
-<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Editar Mi Tienda - ZEDRIP</title><style>body{font-family:Arial;background:#eee;padding:20px}input,select{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc;box-sizing:border-box}.guardar{background:#00c853;color:#fff;border:none;padding:15px;width:100%;border-radius:10px;font-weight:bold}.ver{background:#000;color:#fff;display:block;text-align:center;padding:15px;border-radius:10px;text-decoration:none;margin-top:10px}.card{background:#fff;padding:10px;margin-top:15px;border-radius:10px}.card img{width:100%;height:180px;object-fit:cover;border-radius:8px}</style></head>
-<body><h2>Editar Mi Tienda - ZEDRIP</h2>
-Nombre <input id="nombre" placeholder="Ej: Polo Negro ZEDRIP">
-Precio S/ <input id="precio" type="number" value="59">
-Categoría <select id="categoria"><option>Polos</option><option>Hoodies</option><option>Pantalones</option></select>
-Foto (link) <input id="foto" placeholder="https://...">
-<button class="guardar" onclick="guardar()">GUARDAR PRODUCTO</button>
-<a class="ver" href="index.html">VER TIENDA</a>
-<h2>Mis productos</h2><div id="lista"></div>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Editar ZEDRIP - Solo tú</title><style>body{font-family:Arial;padding:15px;background:#f5efe6}input,select{width:100%;padding:10px;margin:5px 0;border-radius:10px;border:1px solid #ccc;box-sizing:border-box}button{padding:10px 15px;border:none;border-radius:10px;background:#000;color:#fff;margin:5px 0}.card{background:#fff;padding:12px;border-radius:12px;margin:10px 0}img{width:100%;height:150px;object-fit:cover;border-radius:10px}.res{background:#e8ffe8;padding:10px;border-radius:10px;margin:8px 0}</style></head>
+<body><h2>ZEDRIP - Panel Privado Solo Tú</h2>
+<div id="login"><input type="password" id="pass" placeholder="Tu clave"><button onclick="entrar()">Entrar</button><p style="font-size:12px">Clave inicial: ZEDRIP123</p></div>
+<div id="panel" style="display:none">
+<h3>➕ Agregar / Editar Producto</h3>
+<input id="n" placeholder="Nombre ej: Polo Drip Oversize"><select id="c"><option>Polos</option><option>Hoodies</option><option>Joggers</option><option>Polo drip</option></select><input id="p" type="number" placeholder="Precio ej: 49.99"><input id="img" placeholder="Foto principal ej: polo-negro.jpg"><input id="imgNegro" placeholder="Foto Negro ej: polo-negro.jpg"><input id="imgBlanco" placeholder="Foto Blanco ej: polo-blanco.jpg"><input id="imgGris" placeholder="Foto Gris ej: polo-gris.jpg"><button onclick="agregar()">GUARDAR PRODUCTO EN MI TIENDA</button>
+<div id="lista"></div>
+<h3>📦 Reservas de clientes</h3><div id="reservas"></div>
+<h3>🛒 Pedidos del Carrito</h3><div id="pedidos"></div>
+<button onclick="location.href='index.html'">VER MI TIENDA</button>
+</div>
 <script>
-let base=[
-{nombre:"Polo Oversize Blanco",precio:59,categoria:"Polos",foto:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500"},
-{nombre:"Hoodie Negro ZEDRIP",precio:129,categoria:"Hoodies",foto:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500"},
-{nombre:"Pantalón Cargo Beige",precio:99,categoria:"Pantalones",foto:"https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500"}
-];
-function get(){return JSON.parse(localStorage.getItem("productos_zedrip")||"null")||base}
-function mostrar(){let ps=get();document.getElementById("lista").innerHTML=ps.map((p,i)=>`<div class="card"><img src="${p.foto}"><b>${p.nombre}</b><p>S/ ${p.precio} - ${p.categoria}</p><button onclick="eliminar(${i})" style="background:red;color:#fff;border:none;padding:10px;width:100%;border-radius:8px">ELIMINAR</button></div>`).join("")}
-function guardar(){let ps=get();ps.push({nombre:document.getElementById("nombre").value,precio:document.getElementById("precio").value,categoria:document.getElementById("categoria").value,foto:document.getElementById("foto").value});localStorage.setItem("productos_zedrip",JSON.stringify(ps));alert("Guardado! Ahora ve a VER TIENDA");mostrar()}
-function eliminar(i){let ps=get();ps.splice(i,1);localStorage.setItem("productos_zedrip",JSON.stringify(ps));mostrar()}
-mostrar();
+let CLAVE=localStorage.getItem('zedrip_clave')||'ZEDRIP123';
+function entrar(){if(document.getElementById('pass').value===CLAVE){document.getElementById('login').style.display='none';document.getElementById('panel').style.display='block';listar();listarReservas();listarPedidos();}else alert('Clave incorrecta, solo tú');}
+function getP(){return JSON.parse(localStorage.getItem('zedrip_prods')||'[]');}
+function saveP(p){localStorage.setItem('zedrip_prods',JSON.stringify(p));}
+function agregar(){let n=document.getElementById('n').value,p=parseFloat(document.getElementById('p').value);if(!n||!p){alert('Pon nombre y precio');return;}let arr=getP();arr.push({n:n,c:document.getElementById('c').value,p:p,img:document.getElementById('img').value||document.getElementById('imgNegro').value||'polo-negro.jpg',negro:document.getElementById('imgNegro').value||document.getElementById('img').value,blanco:document.getElementById('imgBlanco').value||document.getElementById('img').value,gris:document.getElementById('imgGris').value||document.getElementById('img').value});saveP(arr);listar();alert('¡Listo! Ya sale en tu tienda');}
+function borrar(i){let a=getP();a.splice(i,1);saveP(a);listar();}
+function listar(){let a=getP();document.getElementById('lista').innerHTML='<h3>Tus productos en tienda ('+a.length+')</h3>'+(a.length==0?'Aún no hay, agrega uno':a.map((x,i)=>`<div class="card"><img src="${x.img}"><b>${x.n}</b> - ${x.c} - S/ ${x.p}<br><button onclick="borrar(${i})">Borrar</button></div>`).join(''));}
+function listarReservas(){let r=JSON.parse(localStorage.getItem('zedrip_reservas')||'[]');document.getElementById('reservas').innerHTML=r.length==0?'Aún no hay reservas':r.map(x=>`<div class="res"><b>${x.prod}</b><br>Cliente: ${x.nombre} - ${x.tel}<br>Talla: ${x.talla} Color: ${x.color} Cant: ${x.cant}<br>${x.fecha}</div>`).join('');}
+function listarPedidos(){let p=JSON.parse(localStorage.getItem('zedrip_pedidos')||'[]');document.getElementById('pedidos').innerHTML=p.length==0?'Aún no hay pedidos':p.map(x=>`<div class="res"><b>${x.fecha}</b><br>${x.nombre} - ${x.tel}<br>Entrega: ${x.entrega} - ${x.dir} ${x.det}<br>Pago: ${x.pago}<br>${x.items.map(i=>i.n+' '+i.color+' '+i.talla+' x'+i.q).join('<br>')}<br><b>Total: S/ ${x.total.toFixed(2)}</b></div>`).join('');}
 </script></body></html>
