@@ -1,36 +1,125 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ZEDRIP</title>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<style>body{margin:0;font-family:Arial;background:#f5efe6}.hero{position:relative;width:100%;height:300px;background:#000 url('hero.jpg') center 20%/cover no-repeat;display:flex;align-items:center;justify-content:center}.heroTexto{text-align:center;color:#fff}.heroTexto h1{font-family:Georgia,serif;font-size:52px;letter-spacing:6px;margin:0;text-shadow:2px 2px 10px #000}.heroTexto p{letter-spacing:3px;font-size:12px;margin:10px 0 15px}.heroTexto button{background:#fff;color:#000;border:none;padding:12px 22px;border-radius:25px;font-weight:bold}.shop{max-width:480px;margin:0 auto;background:#fdf6ec;border-radius:25px 25px 0 0;padding:15px}.top{display:flex;gap:10px;align-items:center}.top input{flex:1;padding:10px;border-radius:20px;border:1px solid #ddd}.cats{display:flex;gap:8px;overflow:auto;padding:12px 0}.cats button{border:none;padding:8px 14px;border-radius:20px;background:#eee;white-space:nowrap}.cats button.act{background:#000;color:#fff}.filt{display:flex;gap:10px}.filt select{border:1px solid #ddd;background:#fff;padding:8px;border-radius:20px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px}.card{background:#e9e9e9;border-radius:12px;overflow:hidden;cursor:pointer}.card img{width:100%;height:150px;object-fit:cover;background:#ddd}.card div{padding:10px;background:#fdf6ec}.desc{text-align:center;padding:20px;font-size:14px;line-height:1.5}.cart{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);background:#000;color:#fff;padding:12px 20px;border-radius:25px;font-weight:bold;z-index:20;cursor:pointer}
-#detalle{position:fixed;inset:0;background:#fff;z-index:50;display:none;overflow:auto}.det-top{display:flex;justify-content:space-between;padding:12px 15px}.det-top button{border:none;background:#0a2540;color:#fff;padding:8px 14px;border-radius:20px}.fotosDet{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 8px}.fotosDet img{width:100%;height:300px;object-fit:cover;background:#eee;border-radius:8px}.fotosDet span{font-size:11px;color:#888;text-align:center;display:block;padding:4px 0 0}.det-body{padding:15px}.det-body h2{font-family:Georgia;font-weight:400;font-size:26px;margin:5px 0}.colors{display:flex;gap:10px;margin:10px 0}.colors button{width:38px;height:38px;border:2px solid #ccc;cursor:pointer}.colors button.sel{border:3px solid #000}.sizes{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.sizes button{padding:10px 16px;border:1px solid #ccc;background:#fff}.sizes button.sel{border:2px solid #000;background:#eee}.add{width:100%;background:#0a2540;color:#fff;padding:15px;border:none;font-size:14px;letter-spacing:1px;margin-top:10px}.res{width:100%;background:#fff;color:#000;border:2px solid #000;padding:13px;font-weight:bold;margin-top:10px}
-#carritoBox{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:70;display:none;align-items:flex-end;justify-content:center}.carritoCard{background:#fdf6ec;width:100%;max-width:480px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:15px}.paso{background:#fff;border:1px solid #eee;border-radius:12px;padding:12px;margin:10px 0}.paso h4{margin:0 0 8px}.paso input,.paso select{width:100%;padding:10px;margin:5px 0;border:1px solid #ddd;border-radius:10px;box-sizing:border-box}.itemCar{display:flex;gap:10px;align-items:center;background:#fff;padding:8px;border-radius:10px;margin:6px 0}.itemCar img{width:50px;height:50px;object-fit:cover;border-radius:8px}.qty button{padding:4px 10px;border:1px solid #ccc;background:#fff;border-radius:8px}.pagoOpt{display:flex;gap:8px;align-items:center;background:#fff;border:1px solid #eee;padding:10px;border-radius:10px;margin:6px 0;cursor:pointer}.pagoOpt.sel{border:2px solid #000}.btnNeg{width:100%;background:#000;color:#fff;padding:14px;border:none;border-radius:25px;font-weight:bold;margin-top:10px}
-#resBox{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:80;display:none;align-items:center;justify-content:center}.resCard{background:#fff;width:90%;max-width:360px;padding:20px;border-radius:15px}.resCard input,.resCard select{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc;border-radius:10px;box-sizing:border-box}</style></head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Tienda</title>
+<style>
+*{box-sizing:border-box;font-family:Arial} body{margin:0;background:#f5f5f5}
+header{background:#111;color:#fff;padding:15px;display:flex;justify-content:space-between;align-items:center}
+header button{background:#fff;border:0;padding:8px 12px;border-radius:20px;font-weight:bold}
+#tienda{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
+.card{background:#fff;border-radius:12px;overflow:hidden;padding-bottom:10px;text-align:center}
+.card img{width:100%;height:160px;object-fit:cover}
+.card h3{margin:8px 0 2px;font-size:15px}.card p{margin:2px;color:#666}
+.precio{font-weight:bold;color:#000;font-size:18px}
+.card button{background:#25D366;border:0;padding:8px 14px;border-radius:20px;margin-top:6px}
+#admin,#loginBox{display:none;background:#fff;margin:12px;padding:15px;border-radius:12px}
+input,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:8px}
+.btn{background:#111;color:#fff;border:0;padding:12px;border-radius:10px;width:100%;font-weight:bold}
+.prod-admin{display:flex;gap:10px;align-items:center;border-bottom:1px solid #eee;padding:8px 0}
+.prod-admin img{width:60px;height:60px;object-fit:cover;border-radius:8px}
+.prod-admin button{padding:6px 10px;border:0;border-radius:8px}
+</style>
+</head>
 <body>
-<div class="hero"><div class="heroTexto"><h1>ZEDRIP</h1><p>VISTE TU ESTILO • LIMA - PERÚ</p><button id="btnHero">VER COLECCIÓN ↓</button></div></div>
-<div class="shop">
-<div class="top">☰ <input id="busc" placeholder="Buscar..."> <button id="btnAdmin" style="background:#000;color:#fff;border:none;padding:10px 12px;border-radius:20px;font-size:13px">⚙️</button></div>
-<div class="cats" id="catsBox"><button data-cat="Todos" class="act">Todos</button><button data-cat="Polos">Polos</button><button data-cat="Hoodies">Hoodies</button><button data-cat="Joggers">Joggers</button><button data-cat="Polo drip">Polo drip</button></div>
-<div class="filt"><select id="ordenar"><option value="relevancia">↕ Ordenar: Relevancia</option><option value="menor">Precio: Menor a mayor</option><option value="mayor">Precio: Mayor a menor</option><option value="nombre">Nombre A-Z</option></select><select id="filtroPrecio"><option value="todos">Filtrar: Todos los precios</option><option value="0-50">Hasta S/ 50</option><option value="50-100">S/ 50 - S/ 100</option><option value="100-999">Más de S/ 100</option></select></div>
-<div class="grid" id="grid"></div>
-<p id="msgVacio" style="text-align:center;color:#888;display:none">Sin productos por ahora.</p>
-<div class="desc">ZEDRIP viste tu día a día con prendas urbanas, cómodas y listas para marcar tu estilo en Perú.<br><br><button id="btnResGeneral" style="background:#000;color:#fff;padding:12px 20px;border:none;border-radius:20px;font-weight:bold">📦 RESERVAR MI PEDIDO</button></div>
+<header><b id="nombreTienda">MI TIENDA</b><button onclick="mostrarLogin()">Admin</button></header>
+
+<div id="tienda"></div>
+
+<div id="loginBox">
+<h3>Entrar al Admin</h3>
+<input id="email" placeholder="Tu correo">
+<input id="pass" type="password" placeholder="Tu contraseña">
+<button class="btn" onclick="entrar()">Entrar</button>
 </div>
-<div id="cartBtn" class="cart">🛒 S/ <span id="total">0.00</span></div>
-<div id="detalle"><div class="det-top"><button id="btnCerrarDet">← Ver todo</button><button id="btnSimilar">Ver similares</button></div><div class="fotosDet"><div><img id="fotoModelo" src=""><span>MODELO</span></div><div><img id="fotoPrenda" src=""><span>PRENDA</span></div></div><div class="det-body"><p style="font-size:11px;letter-spacing:1px">HOMBRE / ROPA / ZEDRIP</p><h2 id="nomProd"></h2><p>ZEDRIP</p><p><b id="precioProd"></b></p><p><b>COLOR:</b> <span id="nomColor"></span></p><div class="colors" id="colorsBox"></div><p><b>TALLA:</b></p><div class="sizes" id="sizesBox"></div><button class="add" id="btnAdd">AGREGAR A LA BOLSA</button><button class="res" id="btnResDet">📦 RESERVAR ESTE PEDIDO</button></div></div>
-<div id="carritoBox"><div class="carritoCard">
-<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Tu pedido</h3><button id="btnCerrarCart" style="border:none;background:#eee;padding:6px 10px;border-radius:50%">X</button></div>
-<div class="paso"><h4>1. Carrito</h4><div id="listaCar"></div><p id="vacio" style="display:none">Tu carrito está vacío</p></div>
-<div class="paso"><h4>2. Entrega</h4><div style="display:flex;gap:8px"><button id="btnDom" style="flex:1;background:#000;color:#fff;padding:10px;border:none;border-radius:20px">Domicilio</button><button id="btnRec" style="flex:1;background:#eee;padding:10px;border:none;border-radius:20px">Recogida</button></div><input id="dirEntrega" placeholder="Escribe tu dirección ej: Pje. Francisco de Zela 361, Lima"><input id="detEntrega" placeholder="Detalles de entrega (depto, piso, referencias...)"><p style="font-size:13px">🛵 Envío S/ 5.00</p></div>
-<div class="paso"><h4>3. Datos de contacto</h4><input id="cNombre" placeholder="Nombre"><div style="display:flex;gap:8px"><select style="width:80px"><option>+51</option></select><input id="cTel" placeholder="Teléfono"></div></div>
-<div class="paso"><h4>4. Pago</h4><div class="pagoOpt sel" data-pago="Yape">🏦 <div><b>Yape</b><br><small>Pago por Yape</small></div></div><div class="pagoOpt" data-pago="Efectivo">$ <div><b>Efectivo</b><br><small>En la entrega o recogida</small></div></div><div style="display:flex;justify-content:space-between"><span>Subtotal</span><span id="subTotal">S/ 0.00</span></div><div style="display:flex;justify-content:space-between"><span>Envío</span><span id="envioTxt">S/ 5.00</span></div><label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="checkTerm" style="width:auto"> Acepto los Términos y Condiciones*</label><p id="errorPago" style="color:red;display:none;font-size:13px">Debes aceptar los Términos y Condiciones</p></div>
-<div style="display:flex;justify-content:space-between;font-weight:bold"><span>Total</span><span id="totalFinal">S/ 0.00</span></div><button class="btnNeg" id="btnPedir">Pedir por WhatsApp</button>
-</div></div>
-<div id="resBox"><div class="resCard"><h3>Reservar Pedido - ZEDRIP</h3><p id="resProd"></p><input id="rNombre" placeholder="Tu nombre"><input id="rTel" placeholder="Tu WhatsApp / teléfono"><select id="rTalla"><option>XS</option><option selected>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select><select id="rModelo"><option>Polo Negro</option><option>Polo Blanco</option><option>Polo Gris</option><option>Polo Drip Oversize</option><option>Hoodie Negro</option><option>Jogger Negro</option></select><input id="rCant" type="number" value="1"><button id="btnConfRes" style="width:100%;background:#000;color:#fff;padding:12px;border:none;border-radius:10px">CONFIRMAR RESERVA</button><button id="btnCancRes" style="width:100%;background:#eee;padding:10px;border:none;border-radius:10px;margin-top:8px">Cancelar</button></div></div>
-<script>
-const firebaseConfig = { apiKey: "PEGA_AQUI_TU_CONFIG", authDomain: "", projectId: "", storageBucket: "", messagingSenderId: "", appId: "" };
-firebase.initializeApp(firebaseConfig); const db = firebase.firestore();
-const TU_WHATSAPP = "TU_NUMERO_WHATSAPP";
-let productos=[], cat='Todos', prodActual=null, tallaSel='S', colorSel='', entrega='Domicilio', pago='Yape';
-let carrito = JSON.parse(localStorage.getItem('zedrip_carrito')||'[]');
-function guardarCarrito(){ localStorage.setItem('zedrip_carrito', JSON.stringify(carrito)); }
-function coloresDe(x){ if(x.colores && x.colores.length) return x.colores; let arr=[]; if(x.modeloNegro||x.prendaNegro) arr.push({nombre:'Negro',codigo:'#111111',modelo:x.modeloNegro||'',prenda:x.prendaNegro||''}); if(x.modeloBlanco||x.prendaBlanco) arr.push({nombre:'Blanco',codigo:'#ffffff',modelo:x.modeloBlanco||'',prenda:x.prendaBlanco||''}); if(x.modeloGris||x.prendaGris) arr.push({nombre:'Gris',codigo:'#9a9a9a',modelo:x.modeloGris||'',prenda:x.prendaGris||''}); if(!arr.length) arr.push({nombre:'Único',codigo:'#111111',modelo:x.img||'',prenda:x.img||''});
+
+<div id="admin">
+<h3>Panel Admin - <span id="userEmail"></span></h3>
+<input id="nombre" placeholder="Nombre del producto">
+<input id="precio" type="number" placeholder="Precio S/">
+<textarea id="desc" placeholder="Descripción"></textarea>
+<p>Foto del producto:</p>
+<input type="file" id="fotoInput" accept="image/*">
+<img id="vistaPrevia" style="width:100%;border-radius:10px;display:none">
+<input type="hidden" id="editId">
+<button class="btn" onclick="guardar()">Guardar Producto</button>
+<button class="btn" style="background:#999;margin-top:8px" onclick="salir()">Salir del Admin</button>
+<h4>Mis Productos</h4>
+<div id="listaAdmin"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// ===== PEGA AQUI TU CONFIG DE FIREBASE =====
+const firebaseConfig = {
+  apiKey: "PEGA_AQUI_APIKEY",
+  authDomain: "PEGA_AQUI_AUTHDOMAIN",
+  projectId: "PEGA_AQUI_PROJECTID",
+  storageBucket: "PEGA_AQUI_STORAGE",
+  messagingSenderId: "PEGA_AQUI_SENDER",
+  appId: "PEGA_AQUI_APPID"
+};
+// ==========================================
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+let fotoBase64 = "";
+
+document.getElementById('fotoInput').addEventListener('change', e=>{
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ev=>{
+    const img = new Image(); img.onload=()=>{
+      const c=document.createElement('canvas'); const max=800; let w=img.width,h=img.height;
+      if(w>max){h=h*max/w;w=max}
+      c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+      fotoBase64=c.toDataURL('image/jpeg',0.7);
+      const v=document.getElementById('vistaPrevia'); v.src=fotoBase64; v.style.display='block';
+    }; img.src=ev.target.result;
+  }; r.readAsDataURL(f);
+});
+
+async function cargar(){
+  const snap = await getDocs(collection(db,"productos"));
+  let html=""; let htmlAdmin="";
+  snap.forEach(d=>{
+    const p=d.data();
+    html+=`<div class="card"><img src="${p.foto||'https://via.placeholder.com/300'}"><h3>${p.nombre}</h3><p>${p.desc||''}</p><div class="precio">S/ ${p.precio}</div><button onclick="pedir('${p.nombre}')">Pedir por WhatsApp</button></div>`;
+    htmlAdmin+=`<div class="prod-admin"><img src="${p.foto||''}"><div style="flex:1"><b>${p.nombre}</b><br>S/ ${p.precio}</div><button onclick="editar('${d.id}','${p.nombre}','${p.precio}','${p.desc||''}')">Editar</button><button style="background:#ffcccc" onclick="borrar('${d.id}')">Borrar</button></div>`;
+  });
+  document.getElementById('tienda').innerHTML = html || "<p style='padding:20px'>Aún no hay productos. Entra al Admin para agregar.</p>";
+  document.getElementById('listaAdmin').innerHTML = htmlAdmin;
+}
+window.cargar=cargar; cargar();
+window.pedir=(n)=>{ window.open("https://wa.me/51999999999?text=Hola quiero "+encodeURIComponent(n)," _blank"); };
+
+window.mostrarLogin=()=>{ document.getElementById('loginBox').style.display='block'; window.scrollTo(0,document.body.scrollHeight); };
+window.entrar=async()=>{
+  try{ await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('pass').value); }
+  catch(e){ alert("Correo o contraseña incorrecta"); }
+};
+window.salir=async()=>{ await signOut(auth); location.reload(); };
+onAuthStateChanged(auth, user=>{
+  if(user){ document.getElementById('admin').style.display='block'; document.getElementById('loginBox').style.display='none'; document.getElementById('userEmail').innerText=user.email; cargar(); }
+});
+
+window.guardar=async()=>{
+  const nombre=document.getElementById('nombre').value;
+  const precio=document.getElementById('precio').value;
+  const desc=document.getElementById('desc').value;
+  const id=document.getElementById('editId').value;
+  if(!nombre||!precio) return alert("Falta nombre y precio");
+  if(id){ await updateDoc(doc(db,"productos",id),{nombre,precio,desc,foto:fotoBase64||document.getElementById('vistaPrevia').src}); }
+  else{ if(!fotoBase64) return alert("Elige una foto"); await addDoc(collection(db,"productos"),{nombre,precio,desc,foto:fotoBase64}); }
+  alert("Guardado!"); document.getElementById('nombre').value=""; document.getElementById('precio').value=""; document.getElementById('desc').value=""; document.getElementById('editId').value=""; fotoBase64=""; document.getElementById('vistaPrevia').style.display='none'; cargar();
+};
+window.borrar=async(id)=>{ if(confirm("¿Borrar?")){ await deleteDoc(doc(db,"productos",id)); cargar(); } };
+window.editar=(id,nombre,precio,desc)=>{ document.getElementById('editId').value=id; document.getElementById('nombre').value=nombre; document.getElementById('precio').value=precio; document.getElementById('desc').value=desc; window.scrollTo(0,0); alert("Ahora edita arriba y toca Guardar"); };
+</script>
+</body>
+</html>
