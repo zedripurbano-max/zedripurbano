@@ -1,94 +1,29 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin ZEDRIP</title>
-<style>
-*{box-sizing:border-box;font-family:Arial} body{margin:0;background:#f2f2f2;padding:12px}
-h2{text-align:center} .box{background:#fff;padding:15px;border-radius:12px;margin-bottom:12px}
-input,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #ddd;border-radius:9px}
-.btn{background:#000;color:#fff;border:0;padding:13px;border-radius:10px;width:100%;font-weight:bold}
-.prod{display:flex;gap:10px;align-items:center;border-bottom:1px solid #eee;padding:8px 0}
-.prod img{width:60px;height:60px;object-fit:cover;border-radius:8px}
-.prod button{padding:7px 10px;border:0;border-radius:8px}
-</style>
-</head>
-<body>
-<h2>ZEDRIP - ADMIN</h2>
-<div class="box" id="loginBox">
-<h3>Entrar</h3>
-<input id="email" placeholder="Tu correo">
-<input id="pass" type="password" placeholder="Tu contraseña">
-<button class="btn" onclick="entrar()">Entrar</button>
-<p style="font-size:12px;color:#888">Solo tú puedes entrar con tu correo y contraseña de Firebase.</p>
-</div>
-
-<div class="box" id="adminBox" style="display:none">
-<p>Conectado: <b id="userEmail"></b> <button onclick="salir()">Salir</button></p>
-<h3>Agregar / Editar Producto</h3>
-<input id="nombre" placeholder="Nombre: Ej. Polo Oversize Negro">
-<input id="precio" type="number" placeholder="Precio S/ Ej. 59">
-<textarea id="desc" placeholder="Descripción: Ej. Talla S-M-L, algodón"></textarea>
-<p>Foto:</p>
-<input type="file" id="fotoInput" accept="image/*">
-<img id="vistaPrevia" style="width:100%;border-radius:10px;display:none">
-<input type="hidden" id="editId">
-<button class="btn" onclick="guardar()">GUARDAR PRODUCTO</button>
-</div>
-
-<div class="box" id="listaBox" style="display:none">
-<h3>Mis Productos</h3>
-<div id="lista"></div>
-</div>
-<a href="index.html">← Ver mi tienda</a>
-
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin ZEDRIP</title><style>body{font-family:Arial;padding:15px;background:#f5efe6;margin:0}input,select{width:100%;padding:11px;margin:6px 0;border:1px solid #ccc;border-radius:10px;box-sizing:border-box}button{padding:12px;border:none;border-radius:10px;font-weight:bold;cursor:pointer}.card{background:#fff;padding:12px;border-radius:12px;margin:10px 0}.card img{width:100%;height:150px;object-fit:cover;border-radius:10px}.heroMini{width:100%;height:140px;background:#000 url('https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80') center/cover no-repeat;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Georgia;font-size:34px;letter-spacing:5px}.grupo{border:1px solid #ddd;border-radius:12px;padding:10px;margin:8px 0;background:#fff}.mini{width:100%;height:110px;object-fit:cover;border-radius:10px;display:none;margin-top:6px}.tabs{display:flex;gap:8px;overflow:auto;margin:10px 0}.tabs button{background:#fff;border:1px solid #ddd;padding:9px 14px;border-radius:20px;white-space:nowrap}.tabs button.act{background:#000;color:#fff}</style></head><body>
+<div class="heroMini">ZEDRIP</div>
+<div id="loginBox"><h2>ADMIN ZEDRIP - Solo tú</h2><input id="email" placeholder="Tu correo de Firebase"><input id="pass" type="password" placeholder="Tu contraseña"><button onclick="entrar()" style="background:#000;color:#fff;width:100%">Entrar</button><p style="font-size:12px;color:#666">GRATIS con Firebase Auth. Solo tú entras.</p><a href="index.html">← Ver tienda</a></div>
+<div id="adminBox" style="display:none"><h2>ADMIN ZEDRIP</h2><p>Conectado: <b id="userEmail"></b> <button onclick="salir()">Salir</button></p><a href="index.html">← Ver tienda</a><div class="tabs"><button class="act" onclick="verTab('prod',this)">📦 Productos</button><button onclick="verTab('ped',this)">🛒 Pedidos</button><button onclick="verTab('res',this)">📦 Reservas</button><button onclick="verTab('rev',this)">⭐ Reseñas</button></div>
+<div id="tab-prod"><h3 id="tituloForm">Agregar producto</h3><input id="n" placeholder="Nombre ej: Polo Drip Oversize"><input id="p" type="number" placeholder="Precio ej: 49.99"><select id="c"><option>Polos</option><option>Hoodies</option><option>Joggers</option><option>Polo drip</option></select><p><b>📸 SUBE DESDE TU GALERÍA - SIN PAGAR STORAGE:</b></p><div class="grupo"><b>⚫ NEGRO - Modelo</b><input type="file" id="fModeloNegro" accept="image/*"><img id="vModeloNegro" class="mini"><b>⚫ NEGRO - Prenda</b><input type="file" id="fPrendaNegro" accept="image/*"><img id="vPrendaNegro" class="mini"></div><div class="grupo"><b>⚪ BLANCO - Modelo</b><input type="file" id="fModeloBlanco" accept="image/*"><img id="vModeloBlanco" class="mini"><b>⚪ BLANCO - Prenda</b><input type="file" id="fPrendaBlanco" accept="image/*"><img id="vPrendaBlanco" class="mini"></div><div class="grupo"><b>⬜ GRIS - Modelo</b><input type="file" id="fModeloGris" accept="image/*"><img id="vModeloGris" class="mini"><b>⬜ GRIS - Prenda</b><input type="file" id="fPrendaGris" accept="image/*"><img id="vPrendaGris" class="mini"></div><input type="hidden" id="editId"><button style="background:#000;color:#fff;width:100%" onclick="guardar()" id="btnGuardar">+ AGREGAR PRODUCTO</button><button onclick="cancelarEditar()" id="btnCancelar" style="background:#eee;width:100%;margin-top:8px;display:none">Cancelar edición</button><h3>Productos</h3><div id="lista"></div></div>
+<div id="tab-ped" style="display:none"><h3>Pedidos</h3><div id="ped"></div></div><div id="tab-res" style="display:none"><h3>Reservas</h3><div id="res"></div></div><div id="tab-rev" style="display:none"><h3>Reseñas</h3><div id="rev"></div></div></div>
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-const firebaseConfig = {
-  apiKey: "PEGA_AQUI_APIKEY",
-  authDomain: "PEGA_AQUI_AUTHDOMAIN",
-  projectId: "PEGA_AQUI_PROJECTID",
-  storageBucket: "PEGA_AQUI_STORAGE",
-  messagingSenderId: "PEGA_AQUI_SENDER",
-  appId: "PEGA_AQUI_APPID"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-let fotoBase64="";
-document.getElementById('fotoInput').addEventListener('change', e=>{
-  const f=e.target.files[0]; if(!f) return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    const img=new Image(); img.onload=()=>{
-      const c=document.createElement('canvas'); const max=800; let w=img.width,h=img.height;
-      if(w>max){h=h*max/w;w=max} c.width=w;c.height=h; c.getContext('2d').drawImage(img,0,0,w,h);
-      fotoBase64=c.toDataURL('image/jpeg',0.7);
-      const v=document.getElementById('vistaPrevia'); v.src=fotoBase64; v.style.display='block';
-    }; img.src=ev.target.result;
-  }; r.readAsDataURL(f);
-});
-window.entrar=async()=>{ try{ await signInWithEmailAndPassword(auth,document.getElementById('email').value,document.getElementById('pass').value);}catch(e){alert("Correo o contraseña incorrecta");} };
-window.salir=async()=>{ await signOut(auth); location.reload(); };
-onAuthStateChanged(auth,user=>{ if(user){ document.getElementById('loginBox').style.display='none'; document.getElementById('adminBox').style.display='block'; document.getElementById('listaBox').style.display='block'; document.getElementById('userEmail').innerText=user.email; cargar(); }});
-async function cargar(){
-  const snap=await getDocs(collection(db,"productos")); let html="";
-  snap.forEach(d=>{ const p=d.data(); html+=`<div class="prod"><img src="${p.foto}"><div style="flex:1"><b>${p.nombre}</b><br>S/ ${p.precio}</div><button onclick="editar('${d.id}')">Editar</button><button style="background:#ffcccc" onclick="borrar('${d.id}')">Borrar</button></div>`; });
-  document.getElementById('lista').innerHTML=html||"Aún no hay productos";
-  window._datos={}; snap.forEach(d=>{ window._datos[d.id]=d.data(); });
-}
-window.guardar=async()=>{
-  const nombre=document.getElementById('nombre').value; const precio=document.getElementById('precio').value; const desc=document.getElementById('desc').value; const id=document.getElementById('editId').value;
-  if(!nombre||!precio) return alert("Falta nombre y precio");
-  if(id){ await updateDoc(doc(db,"productos",id),{nombre,precio,desc,foto: fotoBase64 || window._datos[id].foto}); }
-  else{ if(!fotoBase64) return alert("Elige una foto"); await addDoc(collection(db,"productos"),{nombre,precio,desc,foto:fotoBase64}); }
-  alert("Guardado en ZEDRIP!"); document.getElementById('nombre').value=""; document.getElementById('precio').value=""; document.getElementById('desc').value=""; document.getElementById('editId').value=""; fotoBase64=""; document.getElementById('vistaPrevia').style.display='none'; cargar();
-};
-window.borrar=async(id)=>{ if(confirm("¿Borrar este producto?")){ await deleteDoc(doc(db,"productos",id)); cargar(); } };
-window.editar=(id)=>{ const p=window._datos[id]; document.getElementById('editId').value=id; document.getElementById('nombre').value=p.nombre; document.getElementById('precio').value=p.precio; document.getElementById('desc').value=p.desc||""; document.getElementById('vistaPrevia').src=p.foto; document.getElementById('vistaPrevia').style.display='block'; window.scrollTo(0,0); alert("Edita arriba y toca GUARDAR"); };
-</script>
-</body>
-</html>
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getFirestore,collection,getDocs,addDoc,deleteDoc,doc,updateDoc} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+const firebaseConfig={apiKey:"PEGA_AQUI_APIKEY",authDomain:"PEGA_AQUI_AUTHDOMAIN",projectId:"PEGA_AQUI_PROJECTID",storageBucket:"PEGA_AQUI_STORAGE",messagingSenderId:"PEGA_AQUI_SENDER",appId:"PEGA_AQUI_APPID"};
+const app=initializeApp(firebaseConfig);const db=getFirestore(app);const auth=getAuth(app);
+const FALLBACK='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80';
+let fotos={modeloNegro:'',prendaNegro:'',modeloBlanco:'',prendaBlanco:'',modeloGris:'',prendaGris:''};let todos=[];
+window.verTab=(t,btn)=>{['prod','ped','res','rev'].forEach(x=>document.getElementById('tab-'+x).style.display=x===t?'block':'none');document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('act'));btn.classList.add('act');}
+function ligar(inputId,vistaId,clave){document.getElementById(inputId).addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=ev=>{let img=new Image();img.onload=()=>{let c=document.createElement('canvas');let max=700;let w=img.width,h=img.height;if(w>max){h=h*max/w;w=max}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);fotos[clave]=c.toDataURL('image/jpeg',0.6);let v=document.getElementById(vistaId);v.src=fotos[clave];v.style.display='block';};img.src=ev.target.result;};r.readAsDataURL(f);});}
+ligar('fModeloNegro','vModeloNegro','modeloNegro');ligar('fPrendaNegro','vPrendaNegro','prendaNegro');ligar('fModeloBlanco','vModeloBlanco','modeloBlanco');ligar('fPrendaBlanco','vPrendaBlanco','prendaBlanco');ligar('fModeloGris','vModeloGris','modeloGris');ligar('fPrendaGris','vPrendaGris','prendaGris');
+window.entrar=async()=>{try{await signInWithEmailAndPassword(auth,document.getElementById('email').value,document.getElementById('pass').value);}catch(e){alert('Correo o contraseña incorrecta');}};
+window.salir=async()=>{await signOut(auth);location.reload();}
+onAuthStateChanged(auth,user=>{if(user){document.getElementById('loginBox').style.display='none';document.getElementById('adminBox').style.display='block';document.getElementById('userEmail').innerText=user.email;cargar();}});
+async function cargar(){const s=await getDocs(collection(db,"productos"));todos=[];s.forEach(d=>todos.push({id:d.id,...d.data()}));let l=document.getElementById('lista');l.innerHTML='';todos.forEach(x=>{let f=x.prendaNegro||x.modeloNegro||x.img||FALLBACK;l.innerHTML+=`<div class="card"><img src="${f}"><b>${x.n}</b> - S/ ${x.p}<br>${x.c}<br><div style="display:flex;gap:8px;margin-top:8px"><button onclick="editar('${x.id}')" style="background:#000;color:#fff;flex:1">Editar</button><button onclick="borrar('${x.id}')" style="background:red;color:#fff;flex:1">Borrar</button></div></div>`;});
+const ped=await getDocs(collection(db,"pedidos"));document.getElementById('ped').innerHTML='';ped.forEach(d=>{let x=d.data();document.getElementById('ped').innerHTML+=`<div class="card"><b>${x.fecha}</b><br>${x.nombre} - ${x.tel}<br>${x.entrega} - ${x.pago} - <b>S/ ${x.total}</b><br>${(x.items||[]).map(i=>i.n+' '+i.color+' '+i.talla+' x'+i.q).join('<br>')}</div>`;});if(!ped.size)document.getElementById('ped').innerHTML='Sin pedidos';
+const res=await getDocs(collection(db,"reservas"));document.getElementById('res').innerHTML='';res.forEach(d=>{let x=d.data();document.getElementById('res').innerHTML+=`<div class="card">${x.fecha} - <b>${x.prod}</b> - ${x.nombre} - ${x.tel} - ${x.modelo} - ${x.talla} - ${x.cant}</div>`;});if(!res.size)document.getElementById('res').innerHTML='Sin reservas';
+const rev=await getDocs(collection(db,"resenas"));document.getElementById('rev').innerHTML='';rev.forEach(d=>{let x=d.data();document.getElementById('rev').innerHTML+=`<div class="card"><b>${x.nombre} ${'★'.repeat(x.estrellas)}</b><br>${x.texto}</div>`;});if(!rev.size)document.getElementById('rev').innerHTML='Sin reseñas';}
+window.guardar=async()=>{let n=document.getElementById('n').value.trim();let p=parseFloat(document.getElementById('p').value);if(!n||!p)return alert('Pon nombre y precio');let id=document.getElementById('editId').value;let viejo=todos.find(x=>x.id===id)||{};let datos={n,c:document.getElementById('c').value,p,img:fotos.prendaNegro||fotos.modeloNegro||viejo.img||FALLBACK,modeloNegro:fotos.modeloNegro||viejo.modeloNegro||'',prendaNegro:fotos.prendaNegro||viejo.prendaNegro||'',modeloBlanco:fotos.modeloBlanco||viejo.modeloBlanco||'',prendaBlanco:fotos.prendaBlanco||viejo.prendaBlanco||'',modeloGris:fotos.modeloGris||viejo.modeloGris||'',prendaGris:fotos.prendaGris||viejo.prendaGris||''};if(id){await updateDoc(doc(db,"productos",id),datos);}else{if(!fotos.modeloNegro&&!fotos.prendaNegro&&!fotos.modeloBlanco&&!fotos.prendaBlanco&&!fotos.modeloGris&&!fotos.prendaGris)return alert('Sube al menos 1 foto');await addDoc(collection(db,"productos"),datos);}alert('Guardado ✅');document.getElementById('n').value='';document.getElementById('p').value='';document.getElementById('editId').value='';fotos={modeloNegro:'',prendaNegro:'',modeloBlanco:'',prendaBlanco:'',modeloGris:'',prendaGris:''};document.querySelectorAll('.mini').forEach(v=>v.style.display='none');document.getElementById('tituloForm').innerText='Agregar producto';document.getElementById('btnGuardar').innerText='+ AGREGAR PRODUCTO';document.getElementById('btnCancelar').style.display='none';cargar();}
+window.editar=(id)=>{let x=todos.find(v=>v.id===id);document.getElementById('editId').value=id;document.getElementById('n').value=x.n;document.getElementById('p').value=x.p;document.getElementById('c').value=x.c;document.getElementById('tituloForm').innerText='Editando: '+x.n;document.getElementById('btnGuardar').innerText='GUARDAR CAMBIOS';document.getElementById('btnCancelar').style.display='block';window.scrollTo(0,0);}
+window.cancelarEditar=()=>{document.getElementById('editId').value='';document.getElementById('tituloForm').innerText='Agregar producto';document.getElementById('btnGuardar').innerText='+ AGREGAR PRODUCTO';document.getElementById('btnCancelar').style.display='none';}
+window.borrar=async(id)=>{if(confirm('¿Borrar?')){await deleteDoc(doc(db,"productos",id));cargar();}}
+</script></body></html>
